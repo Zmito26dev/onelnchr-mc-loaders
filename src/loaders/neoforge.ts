@@ -11,25 +11,22 @@ export const id = 'neoforge';
 
 export const url = 'https://neoforged.net/';
 
-export async function downloadNeoForge(
-  neoForgeFilePath: string,
-  loaderVersion: string
-) {
+export async function downloadNeoForge(neoForgeFilePath: string, loaderVersion: string) {
   fs.mkdirSync(path.dirname(neoForgeFilePath), { recursive: true });
 
   const downloadLink = `https://maven.neoforged.net/releases/net/neoforged/neoforge/${loaderVersion}/neoforge-${loaderVersion}-installer.jar`;
+  
+  try {
+    const response = await axios.get(downloadLink, {
+      responseType: 'arraybuffer',
+    });
 
-  const neoForgeResponse = await axios.get(downloadLink, {
-    responseType: 'stream',
-  });
+    const buffer = Buffer.from(response.data);
+    await fs.promises.writeFile(neoForgeFilePath, buffer);
 
-  const writer = fs.createWriteStream(neoForgeFilePath);
-  neoForgeResponse.data.pipe(writer);
-
-  await new Promise((resolve, reject) => {
-    writer.on('finish', resolve);
-    writer.on('error', reject);
-  });
+  } catch (error) {
+    console.error('Error downloading NeoForge:', error);
+  }
 }
 
 export async function getMavenMetadata() {

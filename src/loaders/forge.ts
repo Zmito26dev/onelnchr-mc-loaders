@@ -11,25 +11,22 @@ export const id = 'forge';
 
 export const url = 'https://files.minecraftforge.net/';
 
-export async function downloadForge(
-  forgeFilePath: string,
-  loaderVersion: string
-) {
+export async function downloadForge(forgeFilePath: string, loaderVersion: string) {
   fs.mkdirSync(path.dirname(forgeFilePath), { recursive: true });
 
   const downloadLink = getDownloadLink(loaderVersion);
 
-  const forgeResponse = await axios.get(downloadLink, {
-    responseType: 'stream',
-  });
+  try {
+    const response = await axios.get(downloadLink, {
+      responseType: 'arraybuffer',
+    });
 
-  const writer = fs.createWriteStream(forgeFilePath);
-  forgeResponse.data.pipe(writer);
+    const buffer = Buffer.from(response.data);
+    await fs.promises.writeFile(forgeFilePath, buffer);
 
-  await new Promise((resolve, reject) => {
-    writer.on('finish', resolve);
-    writer.on('error', reject);
-  });
+  } catch (error) {
+    console.error('Error downloading Forge:', error);
+  }
 }
 
 export async function getMavenMetadata() {

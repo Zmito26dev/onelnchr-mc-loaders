@@ -1,11 +1,12 @@
 {
-  "name": "tomate-loaders",
-  "version": "2.0.2",
+  "name": "onelnchr-mc-loaders",
+  "version": "1.0.4",
   "description": "Provides metadata for minecraft modloaders",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest --runInBand",
-    "prepare": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "jest --runInBand"
   },
   "files": [
     "dist"
@@ -18,13 +19,13 @@
     "quilt",
     "neoforge"
   ],
-  "author": "Tomate0613",
+  "author": "Zmito26",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/doublekekse/tomate-loaders.git"
+    "url": "git+https://github.com/Zmito26dev/onelnchr-mc-loaders.git"
   },
   "bugs": {
-    "url": "https://github.com/Tomate0613/tomate-loaders/issues"
+    "url": "https://github.com/Zmito26dev/onelnchr-mc-loaders/issues"
   },
   "license": "MIT",
   "dependencies": {
